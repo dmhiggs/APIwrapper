@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from bottle import Bottle, route, run, template, ServerAdapter
 import feed
 import buzz

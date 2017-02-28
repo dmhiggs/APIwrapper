@@ -18,7 +18,8 @@ class Feed():
         self.fullURL = self.baseURL + feedtype #make full url
         self.feedURL = urllib.urlopen(self.fullURL) #open url
         feedJSON = json.loads(self.feedURL.read()) #read url into json
-
+	self.buzzes = []
+	self.sorted_buzzes = []
         uri = {} #uri is unique
         i = 2
         #go through feed pages until "buzzes = []"...?p=#
@@ -27,14 +28,18 @@ class Feed():
             #so skip over the duplicates...
             #list of dicts...comparing dicts...
             for abuzz in feedJSON["buzzes"]:
-                if abuzz["uri"] in uri.values():
+		thing = buzz.Buzz(abuzz)
+                if thing in uri.values(): #hopefully the overloaded operator will fix the duplicates...
                     continue
-                uri[abuzz["uri"]] = abuzz["uri"] #might as well make it equal itself
-                self.buzzes.append(buzz.Buzz(abuzz)) #make buzz and append to buzzes
+                uri[thing.geturi()] = thing #make dict of buzzes from uris
+                self.buzzes.append(thing) #make buzz and append to buzzes
             temp = self.fullURL+"?p="+str(i)
             feedJSON = json.loads(urllib.urlopen(temp).read())
             i = i + 1
-        self.buzzes = list(set(self.buzzes))
+        #self.buzzes = list(set(self.buzzes)) ###previous attempt at getting rid of duplicates
+
+	#It appears to make duplicates when you reload the page... hmmmm
+
         return
 
     def reload_buzzes(self): #reload buzzes incase of updates...
@@ -65,11 +70,13 @@ class Feed():
 
     ## <link>Title: Description</a>
     def get_buzzes_links(self):
+	
+	self.sorted_buzzes = sorted(self.sorted_buzzes)
+
         links = ""
         for abuzz in self.sorted_buzzes:
             links = links + '<a href = "' + abuzz.getlink() + '">' + abuzz.gettitle() + '</a><br><br>'
         return links
-
 
     #1. endpoint given feed, start, end...get buzzes within start&end
     def get_buzzes_in_date_range(self, start, end):

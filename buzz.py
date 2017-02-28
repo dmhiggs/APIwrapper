@@ -44,6 +44,19 @@ class Buzz():
         self.title = buzzjson["title"]
         self.uri = buzzjson["uri"]
         return
+
+    def __eq__(self, other):
+	if self.uri == other.uri:
+		return True
+        return False
+    def __lt__(self, other):
+	if self.title < other.title:
+		return True
+	return False
+    def __ge__(self, other):
+	if self.title >= other.title:
+		return True
+	return False
     
     def getcommentsnum(self):
         return self.comments_number
@@ -73,3 +86,4 @@ class Buzz():
 
     def geturi(self):
         return self.uri
+

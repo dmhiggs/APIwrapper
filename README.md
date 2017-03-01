@@ -38,3 +38,4 @@ I created a class for feeds and a class for buzzes.
 
 I had a problem with duplicates appearing in the json. I looked through it and there's duplicates on the webpages. I sorted out the duplicates at the initialization of the feed by using a dictionary and overloading the "equal to" operator in the buzz object so when it compared buzzes, it would compare it by the uri since each buzz must have a unique uri to be a unique article. I also overloaded the "less than" and the "greater than or equal to" operators to sort the buzz objects into alphabetical order (based on title), so it would be easier to see duplicates.
 
+I displayed them as links with titles and descriptions because that is easier for me to read and see if it is working correctly. If I can access the links, titles, and descriptions without error, I likely have parsed the json correctly. The json was also saved in another variable, but not printed.
